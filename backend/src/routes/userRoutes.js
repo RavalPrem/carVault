@@ -6,7 +6,7 @@ const route = express.Router()
 const validateErrors = require('../middlewares/userMiddleware')
 
 //userController
-const signUp = require('../controllers/userController')
+const {signUp} = require('../controllers/userController')
 
 route.get('/',(req,res) => {
     res.send('hello')

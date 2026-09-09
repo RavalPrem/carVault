@@ -11,6 +11,10 @@ dotenv.config()
 const connectDB = require('./src/config/connection')
 connectDB()
 
+//cloudinary connect
+const connectCloudinary = require('./src/config/cloudinary')
+connectCloudinary()
+
 app.use(express.json())
 app.use(cors())
 

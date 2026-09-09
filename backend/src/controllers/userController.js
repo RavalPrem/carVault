@@ -6,6 +6,9 @@ const {
     hashingPassword
 }
 = require('../validator/hashPassword')
+
+//token generator
+const tokenGenerator = require('../validator/jwttoken')
  
 const signUp = async(req,res,next) => {
     try {
@@ -22,18 +25,20 @@ const signUp = async(req,res,next) => {
 
         const hashedPassword = await hashingPassword(hashPassword)
 
+        
         const user = await userModel.create({
             userName,
             email,
             phoneNumber,
             hashPassword : hashedPassword
         })
-
-        console.log(req.body)
+        
+        const token = await tokenGenerator(user._id);
 
         return res.status(201).json({
             success : true,
             message : "successfully signup",
+            token,
             user : {
                 id : user._id,
                 name : user.userName
@@ -48,4 +53,55 @@ const signUp = async(req,res,next) => {
     }
 }
 
-module.exports = signUp
+const logIn = async(req,res,next) => {
+    try {
+        const {email, password} = req.body
+
+        //check if email is there or not
+
+        const userExist = await userModel.findOne({email});
+
+        if(!userExist) {
+            return res.status(404).json({
+                success : false,
+                message : "User not found please signup first"
+            })
+        }
+
+        const match = await comparePassword(password,userModel.hashPassword)
+
+        if(!match) {
+            return res.status(404).json({
+                success : false,
+                message : "Password doesn't match retry it"
+            })
+        }
+
+        const token = await tokenGenerator(userModel._id)
+
+        return res.status(201).json({
+            success : true,
+            message : "successfully login",
+            user : {
+                id : userModel._id,
+                token,
+                user : {
+                    userName : userModel.userName,
+                    email : userModel.email,
+                }
+            }
+        })
+
+        //comparing the password
+    } catch (error) {
+        res.status(500).json({
+            success : false,
+            message : error.message
+        })
+    }
+}
+
+module.exports = {
+    signUp,
+    logIn
+}
