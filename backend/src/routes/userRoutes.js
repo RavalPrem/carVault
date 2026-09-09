@@ -1,17 +1,22 @@
 const express = require('express')
 
-const route = express.Router()
+const userRoute = express.Router()
 
 //validate error
 const validateErrors = require('../middlewares/userMiddleware')
 
 //userController
-const {signUp} = require('../controllers/userController')
+const {
+    signUp,
+    logIn
+}
+ = require('../controllers/userController')
 
-route.get('/',(req,res) => {
+userRoute.get('/',(req,res) => {
     res.send('hello')
 })
 
-route.post('/signUp',validateErrors,signUp)
+userRoute.post('/signUp',validateErrors,signUp)
+userRoute.post('/logIn',logIn)
 
-module.exports = route
+module.exports = userRoute

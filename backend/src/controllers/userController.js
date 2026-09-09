@@ -46,6 +46,8 @@ const signUp = async(req,res,next) => {
         })
 
     } catch (error) {
+        console.error('the error ', error)
+
         res.status(500).json({
             success : false,
             message : error.message
@@ -68,7 +70,7 @@ const logIn = async(req,res,next) => {
             })
         }
 
-        const match = await comparePassword(password,userModel.hashPassword)
+        const match = await comparePassword(password,userExist.hashPassword)
 
         if(!match) {
             return res.status(404).json({
@@ -82,18 +84,18 @@ const logIn = async(req,res,next) => {
         return res.status(201).json({
             success : true,
             message : "successfully login",
+            id : userExist._id,
+            token,
             user : {
-                id : userModel._id,
-                token,
-                user : {
-                    userName : userModel.userName,
-                    email : userModel.email,
-                }
+                username : userExist.userName,
+                email : userExist.email 
             }
         })
 
         //comparing the password
     } catch (error) {
+        console.error('the error',error)
+
         res.status(500).json({
             success : false,
             message : error.message
