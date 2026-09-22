@@ -1,0 +1,6 @@
+{
+  "userName" : "prem",
+  "email" : "prem@gmail.com",
+  "hashPassword" : "password",
+  "phoneNumber" : 4587852222
+}

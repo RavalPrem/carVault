@@ -2,7 +2,7 @@ const Joi = require("joi");
 //user model
 const userModel = require("../models/userModel");
 
-const validateErrors = async (req, res, next) => {
+const SignupvalidateErrors = async (req, res, next) => {
   const Schema = await Joi.object({
     userName: Joi.string().min(3).max(30).required().messages({
       "string.min": "userName must be atleast 3 character long",
@@ -12,7 +12,7 @@ const validateErrors = async (req, res, next) => {
 
     hashPassword: Joi.string().min(5).required().messages({
       "string.min": "password should atleast 5 character long",
-      "any.required": "Password is required",
+      "any.required": "password is required",
     }),
 
     email: Joi.string().email().required().messages({
@@ -46,4 +46,35 @@ const validateErrors = async (req, res, next) => {
   next();
 };
 
-module.exports = validateErrors;
+const loginValidationError = async(req,res,next) => {
+  const Schema = await Joi.object({
+    email: Joi.string().email().required().messages({
+      email: "it must be email",
+      "any.required": "email is required",
+    }),
+
+    password: Joi.string().min(5).required().messages({
+      "string.min": "password should atleast 5 character long",
+      "any.required": "Password is required",
+    })
+  })
+
+  const {error} = Schema.validate(req.body);
+
+  if(error) {
+    const errorMessage = error.details[0].message;
+
+    return res.status(400).json({
+      success : false,
+      message : errorMessage
+    })
+  }
+
+  next();
+}
+
+module.exports = {
+  SignupvalidateErrors,
+  loginValidationError
+
+};

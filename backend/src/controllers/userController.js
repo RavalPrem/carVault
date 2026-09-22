@@ -103,7 +103,75 @@ const logIn = async(req,res,next) => {
     }
 }
 
+const updateProfile = async(req,res) => {
+    try {
+        const {userID} = req.params;
+
+        const {userName,email,password,newPassword,confirmPassword,phoneNumber} = req.body;
+
+        const existUser = await userModel.findById(userID)
+
+        if(!existUser) {
+            return res.status(401).json({
+                success : false,
+                message : "User not found"
+            })
+        }
+
+        if (!userName || !email || !password || !phoneNumber) {
+            return res.status(400).json({
+                success: false,
+                message: 'PUT requires all fields: userName, email, password, and phoneNumber.',
+            });
+        }
+
+        const MatchOldPassword = await comparePassword(password,existUser.hashPassword)
+
+        if(!MatchOldPassword) {
+            return res.status(401).json({
+                success: false,
+                message: 'Current password does not match.',
+            });
+        }
+
+        if (newPassword) {
+            if (newPassword !== confirmPassword) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'New password and confirm password do not match.',
+                });
+            }
+            existUser.hashPassword = await hashingPassword(newPassword);
+        }
+
+        existUser.userName = userName
+        existUser.email = email
+        existUser.phoneNumber = phoneNumber
+
+        await existUser.save();
+
+        return res.status(201).json({
+            success : true,
+            user : {
+                name : existUser.userName,
+                email : existUser.email,
+                phoneNumber : existUser.phoneNumber,
+            }
+        })
+
+
+    } catch (error) {
+        console.error('the error',error)
+
+        res.status(500).json({
+            success : false,
+            message : error.message
+        })
+    }
+}
+
 module.exports = {
     signUp,
-    logIn
+    logIn,
+    updateProfile
 }

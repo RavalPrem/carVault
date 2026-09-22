@@ -1,0 +1,54 @@
+frontend/
+└── src/
+    │
+    ├── assets/
+    │   ├── images/
+    │   ├── icons/
+    │   └── logo/
+    │
+    ├── components/
+    │   │
+    │   ├── Navbar.jsx
+    │   ├── Footer.jsx
+    │   │
+    │   ├── Hero.jsx
+    │   ├── SearchBar.jsx
+    │   │
+    │   ├── CarCard.jsx
+    │   ├── CarSlider.jsx
+    │   ├── CarGrid.jsx
+    │   ├── FilterSidebar.jsx
+    │   │
+    │   ├── CarImageGallery.jsx
+    │   ├── CarSpecifications.jsx
+    │   └── ProtectedRoute.jsx
+    │
+    ├── layouts/
+    │   └── MainLayout.jsx
+    │
+    ├── pages/
+    │   ├── Home.jsx
+    │   ├── Marketplace.jsx
+    │   ├── CarDetails.jsx
+    │   ├── SellCar.jsx
+    │   ├── Contact.jsx
+    │   ├── About.jsx
+    │   ├── Login.jsx
+    │   ├── Signup.jsx
+    │   ├── Profile.jsx
+    │   └── NotFound.jsx
+    │
+    ├── services/
+    │   ├── api.js
+    │   ├── authService.js
+    │   └── carService.js
+    │
+    ├── context/
+    │   └── AuthContext.jsx
+    │
+    ├── data/
+    │   └── dummyCars.js
+    │
+    ├── App.jsx
+    ├── main.jsx
+    └── index.css
