@@ -1,9 +1,13 @@
 import { Search } from 'lucide-react'
 import { NavLink, Link } from 'react-router-dom'
 
-const Navbar = () => {
+const Navbar = ({isHomePage}) => {
     return (
-        <header className='h-35 w-screenflex items-center justify-center'>
+        <header className={`h-25 w-screen flex items-center justify-center z-10 bg-[#0000006f]
+                ${isHomePage ? "absolute left-0 top-0" : ""}
+            `}
+            
+        >
             <nav className='h-20 w-screen flex items-center justify-around'>
                 <div className='logo flex'>
                     Car  <p className='text-blue-700'>Vault</p>
